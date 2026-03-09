@@ -49,8 +49,8 @@ export default function WishPage() {
                 <motion.div
                     key={i}
                     className="absolute text-3xl pointer-events-none"
-                    style={{ left: `${8 + i * 12}%`, bottom: "-5%" }}
-                    animate={{ y: [0, -(window?.innerHeight || 800) - 100], rotate: [0, i % 2 === 0 ? 8 : -8, 0] }}
+                    style={{ left: `${8 + i * 12}%`, bottom: "-10vh" }}
+                    animate={{ y: [0, "-120vh"], rotate: [0, i % 2 === 0 ? 8 : -8, 0] }}
                     transition={{
                         duration: 6 + Math.random() * 4,
                         delay: i * 0.4,
