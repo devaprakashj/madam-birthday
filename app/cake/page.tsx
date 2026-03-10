@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useConfetti } from "../components/useConfetti";
@@ -14,16 +14,36 @@ export default function CakePage() {
     const [showAppaMsg, setShowAppaMsg] = useState(false);
     const [showDevaMsg, setShowDevaMsg] = useState(false);
 
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+
+    useEffect(() => {
+        // Play Happy Birthday BGM when page opens
+        // Using the local happy_birthday.mp3 file from public folder
+        const bgm = new Audio("/happy_birthday.mp3");
+        bgm.loop = true;
+        bgm.volume = 0.4;
+        audioRef.current = bgm;
+        bgm.play().catch(e => console.log("BGM play blocked until interaction"));
+
+        return () => {
+            bgm.pause();
+            bgm.src = "";
+        };
+    }, []);
+
     const handleCut = () => {
         if (isCut) return;
         setIsCut(true);
         setIsBlowing(true);
 
-        // Play Sound
+        // Ensure BGM is playing (if it was blocked by browser)
+        audioRef.current?.play().catch(e => { });
+
+        // Play Claps Sound (custom file)
         try {
-            const hdBgm = new Audio("https://cdn.pixabay.com/audio/2022/03/10/audio_f8a0a0b1cb.mp3");
-            hdBgm.volume = 0.5;
-            hdBgm.play().catch(e => console.log("Audio play blocked"));
+            const claps = new Audio("/clapping_hands.mp3");
+            claps.volume = 0.6;
+            claps.play().catch(e => console.log("Claps play blocked"));
         } catch (e) { }
 
         // Celebration!
